@@ -1,7 +1,7 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../context/useAuthContext";
 
-export default function PublicRoute({ children }) {
+export default function PublicRoute() {
   const { user, loadingAuth } = useAuth();
 
   if (loadingAuth) return null;
@@ -11,5 +11,5 @@ export default function PublicRoute({ children }) {
   if (user && !allowedForLoggedIn) {
     return <Navigate to="/dashboard" replace />;
   }
-  return children;
+  return <Outlet />;
 }
