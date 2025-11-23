@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
-import api from "../services/api";
+import { fetchCurrentUser, loginUser, registerUser } from "../services/auth.api";
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
 
     try {
       setLoadingAuth(true);
-      const res = await api.get("/auth/me");
+      const res = await fetchCurrentUser();
       const returnedUser = res.data?.user ?? res.data;
       setUser(returnedUser);
     } catch (err) {
@@ -50,8 +50,7 @@ const AuthProvider = ({ children }) => {
     try {
       sessionStorage.setItem("register-email", email);
 
-      await api.post("/auth/register", { name, email, password });
-
+      await registerUser({ name, email, password });
       navigate(`/verify-otp`);
     } catch (err) {
       alert(err.response?.data?.message || "Registration failed");
@@ -61,7 +60,7 @@ const AuthProvider = ({ children }) => {
   // LOGIN
   const login = async (email, password) => {
     try {
-      const res = await api.post("/auth/login", { email, password });
+      const res = await loginUser({ email, password });
 
       const token = res.data.token;
       if (!token) throw new Error("No token returned from server");

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import OtpInput from "../components/OtpInput";
+import OtpInput from "../../components/OtpInput";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
+import { verifyOtp } from "../../services/auth.api";
 
 export default function VerifyOtp() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function VerifyOtp() {
   });
   const handleOtpComplete = async (otp) => {
     if (isRegisterFlow) {
-      await api.post("/auth/verify-otp", {
+      await verifyOtp({
         email,
         code: otp,
         purpose: "VERIFY_EMAIL",

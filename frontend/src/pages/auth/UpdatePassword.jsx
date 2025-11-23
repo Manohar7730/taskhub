@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../context/useAuthContext";
-import OtpInput from "../components/OtpInput";
-import api from "../services/api";
+import useAuth from "../../context/useAuthContext";
+import OtpInput from "../../components/OtpInput";
+import { updatePassword } from "../../services/auth.api";
 
 export default function UpdatePassword() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export default function UpdatePassword() {
       return alert("Passwords do not match!");
 
     try {
-      await api.post("/auth/password/update", {
+      await updatePassword({
         email,
         code: otp,
         newPassword: formData.newPassword,
