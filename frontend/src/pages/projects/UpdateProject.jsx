@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getProjectByID, updateProject } from "../../services/project.api";
 
 export default function UpdateProject() {
-  const { id } = useParams();
+  const  { id: projectId } = useParams();
   const navigate = useNavigate();
 
   const [project, setProject] = useState(null);
@@ -14,7 +14,7 @@ export default function UpdateProject() {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const res = await getProjectByID({ id });
+        const res = await getProjectByID({projectId});
         const p = res.data.project;
 
         setProject(p);
@@ -27,7 +27,7 @@ export default function UpdateProject() {
     };
 
     fetchProject();
-  }, [id]);
+  }, [projectId]);
 
   if (!project) return <p>Loading...</p>;
 
@@ -35,8 +35,8 @@ export default function UpdateProject() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateProject({id,title,description,dueDate})
-      navigate(`/projects/${id}`);
+      await updateProject({projectId,title,description,dueDate})
+      navigate(`/projects/${projectId}`);
     } catch (err) {
       console.error("Failed to update project", err);
       alert("Update failed");
@@ -103,7 +103,7 @@ export default function UpdateProject() {
 
         {/* CANCEL */}
         <button
-          onClick={() => navigate(`/projects/${id}`)}
+          onClick={() => navigate(`/projects/${projectId}`)}
           className="mt-4 w-full font-medium text-gray-600 transition hover:text-gray-800 active:scale-95"
         >
           Cancel
