@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
-import { fetchCurrentUser, loginUser, registerUser } from "../services/auth.api";
+import {
+  fetchCurrentUser,
+  loginUser,
+  registerUser,
+} from "../services/auth.api";
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();

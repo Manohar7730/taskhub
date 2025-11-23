@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createProject } from "../../services/project.api"; 
+import { createProject } from "../../services/project.api";
 
 export default function CreateProject() {
   const [title, setTitle] = useState("");

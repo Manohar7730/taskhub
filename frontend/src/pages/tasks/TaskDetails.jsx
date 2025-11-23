@@ -13,8 +13,8 @@ const TaskDetails = () => {
   const navigate = useNavigate();
 
   const [attachments, setAttachments] = useState([]);
-const [file, setFile] = useState(null);
-const fileInputRef = useRef(null);
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -36,17 +36,16 @@ const fileInputRef = useRef(null);
     loadAttachments({ taskId, setAttachments });
   }, [loadTask, taskId]);
 
+  const handleUpload = async () => {
+    await uploadFile({ file, taskId, setFile, setAttachments });
 
-const handleUpload = async () => {
-  await uploadFile({ file, taskId, setFile, setAttachments });
+    // Clear input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
 
-  // Clear input
-  if (fileInputRef.current) {
-    fileInputRef.current.value = "";
-  }
-
-  setFile(null);
-};
+    setFile(null);
+  };
   const handleDelete = (id) => {
     deleteFile({
       id,
@@ -54,26 +53,26 @@ const handleUpload = async () => {
       setAttachments,
     });
   };
-const handleDownload = async (id, fileName) => {
-  try {
-    const response = await api.get(`/attachments/${id}/download`, {
-      responseType: "blob",  // VERY IMPORTANT
-    });
+  const handleDownload = async (id, fileName) => {
+    try {
+      const response = await api.get(`/attachments/${id}/download`, {
+        responseType: "blob", // VERY IMPORTANT
+      });
 
-    const blob = new Blob([response.data]);
-    const url = window.URL.createObjectURL(blob);
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
 
-    link.click();
-    link.remove();
-  } catch (err) {
-    console.error("Download failed:", err);
-  }
-};
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Download failed:", err);
+    }
+  };
   if (loading) return <p className="p-6">Loading task...</p>;
   if (!task) return <p className="p-6">Task not found.</p>;
 
@@ -111,11 +110,12 @@ const handleDownload = async (id, fileName) => {
         <h2 className="mb-3 font-semibold">Attachments</h2>
 
         <div className="mb-4 flex items-center gap-2">
-<input
-  ref={fileInputRef}
-  type="file"
-  onChange={(e) => setFile(e.target.files[0])}
-/>          <button
+          <input
+            ref={fileInputRef}
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+          />{" "}
+          <button
             onClick={handleUpload}
             className="rounded bg-blue-600 px-4 py-2 text-white"
           >
@@ -153,8 +153,8 @@ const handleDownload = async (id, fileName) => {
                   </a>
 
                   <button
-                      onClick={() => handleDownload(a._id, a.fileName)}
-  className="text-sm text-green-700 hover:underline"
+                    onClick={() => handleDownload(a._id, a.fileName)}
+                    className="text-sm text-green-700 hover:underline"
                   >
                     Download
                   </button>

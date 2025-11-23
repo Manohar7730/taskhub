@@ -33,18 +33,14 @@ export default function Register() {
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
-      <div className="flex w-[340px] flex-col items-center rounded-xl bg-white shadow-xl p-6">
-
-        <h1 className="text-4xl font-semibold text-cyan-600 drop-shadow-sm mb-2">
+      <div className="flex w-[340px] flex-col items-center rounded-xl bg-white p-6 shadow-xl">
+        <h1 className="mb-2 text-4xl font-semibold text-cyan-600 drop-shadow-sm">
           TaskHub
         </h1>
-        
-        <p className="text-gray-600 text-center mb-6">
-          Create a new account
-        </p>
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
+        <p className="mb-6 text-center text-gray-600">Create a new account</p>
 
+        <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
           {/* Name */}
           <input
             type="text"
@@ -52,10 +48,7 @@ export default function Register() {
             value={formData.name}
             placeholder="Enter your name"
             onChange={handleChange}
-            className="
-              w-full px-3 py-2 rounded-md border border-gray-300 
-              focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200
-            "
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
           {/* Email */}
@@ -65,10 +58,7 @@ export default function Register() {
             value={formData.email}
             placeholder="Enter your email"
             onChange={handleChange}
-            className="
-              w-full px-3 py-2 rounded-md border border-gray-300 
-              focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200
-            "
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
           {/* Password */}
@@ -78,10 +68,7 @@ export default function Register() {
             value={formData.password}
             placeholder="Enter your password"
             onChange={handleChange}
-            className="
-              w-full px-3 py-2 rounded-md border border-gray-300 
-              focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200
-            "
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
           {/* Confirm Password */}
@@ -91,10 +78,7 @@ export default function Register() {
             value={formData.confirmPassword}
             placeholder="Confirm your password"
             onChange={handleChange}
-            className="
-              w-full px-3 py-2 rounded-md border border-gray-300 
-              focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200
-            "
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
           {/* Show Password Toggle */}
@@ -111,24 +95,17 @@ export default function Register() {
           {/* Submit */}
           <button
             type="submit"
-            className="
-              w-full py-2 rounded-md bg-cyan-500 text-white font-medium 
-              transition hover:bg-cyan-600 active:scale-95
-            "
+            className="w-full rounded-md bg-cyan-500 py-2 font-medium text-white transition hover:bg-cyan-600 active:scale-95"
           >
             Register
           </button>
         </form>
 
         <div className="mt-4 text-center">
-          <Link
-            to="/login"
-            className="text-sm text-cyan-600 hover:underline"
-          >
+          <Link to="/login" className="text-sm text-cyan-600 hover:underline">
             Already have an account? Sign In
           </Link>
         </div>
-
       </div>
     </div>
   );

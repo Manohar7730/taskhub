@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getProjectByID, updateProject } from "../../services/project.api";
 
 export default function UpdateProject() {
-  const  { id: projectId } = useParams();
+  const { id: projectId } = useParams();
   const navigate = useNavigate();
 
   const [project, setProject] = useState(null);
@@ -14,7 +14,7 @@ export default function UpdateProject() {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const res = await getProjectByID({projectId});
+        const res = await getProjectByID({ projectId });
         const p = res.data.project;
 
         setProject(p);
@@ -35,7 +35,7 @@ export default function UpdateProject() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateProject({projectId,title,description,dueDate})
+      await updateProject({ projectId, title, description, dueDate });
       navigate(`/projects/${projectId}`);
     } catch (err) {
       console.error("Failed to update project", err);

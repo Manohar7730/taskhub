@@ -68,7 +68,9 @@ export default function AddTask() {
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-gray-700">Status</label>
+            <label className="mb-1 block font-semibold text-gray-700">
+              Status
+            </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
@@ -81,7 +83,9 @@ export default function AddTask() {
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-gray-700">Priority</label>
+            <label className="mb-1 block font-semibold text-gray-700">
+              Priority
+            </label>
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
@@ -94,7 +98,9 @@ export default function AddTask() {
           </div>
 
           <div>
-            <label className="mb-1 block font-semibold text-gray-700">Due Date</label>
+            <label className="mb-1 block font-semibold text-gray-700">
+              Due Date
+            </label>
             <input
               type="date"
               value={dueDate}

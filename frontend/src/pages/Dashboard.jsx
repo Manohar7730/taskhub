@@ -13,7 +13,7 @@ export default function Dashboard() {
     const fetchProjects = async () => {
       try {
         const res = await getAllProjects();
-        setProjects(res.data); 
+        setProjects(res.data);
       } catch (err) {
         console.error("Failed to load projects:", err);
       }
@@ -78,7 +78,7 @@ export default function Dashboard() {
             {projects.map((project) => (
               <div
                 key={project._id}
-                onClick={() => navigate(`/projects/${project._id}`)} 
+                onClick={() => navigate(`/projects/${project._id}`)}
                 className="cursor-pointer rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md active:scale-[.98]"
               >
                 <h3 className="text-lg font-semibold text-gray-800">
