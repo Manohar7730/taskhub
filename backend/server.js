@@ -20,7 +20,6 @@ app.get("/api/s3-test", async (req, res) => {
         Key: `test-${Date.now()}.txt`,
         Body: "S3 connection working!",
         ContentType: "text/plain",
-        ACL: "public-read",
       })
       .promise();
 
