@@ -110,4 +110,4 @@ npm run build
 
 ## License
 
-MIT (optional to update)
+@Manohar_pediredla
