@@ -7,29 +7,29 @@ const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // check if user exists
+    // Check if the email is already registered
     const exists = await UserModel.findOne({ email });
     if (exists) {
       console.warn(`[REGISTER] Email already exists: ${email}`);
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // create new user
+    // Create the new user
     const user = await UserModel.create({ name, email, password });
 
-    // generate and save OTP token
+    // Generate an OTP for verifying the user's email
     const code = generateOtp();
     await OtpTokenModel.create({
       email,
       code,
       purpose: "VERIFY_EMAIL",
       used: false,
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 mins
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
     });
 
     console.info(`[REGISTER] OTP created for: ${email}`);
 
-    // send email
+    // Send the OTP to the user's email
     await sendEmail(email, "Verify your email", `Your OTP is ${code}`);
 
     console.info(`[REGISTER] OTP email sent to: ${email}`);

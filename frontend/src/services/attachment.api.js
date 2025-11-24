@@ -5,7 +5,7 @@ export const loadAttachments = async ({ taskId, setAttachments }) => {
   setAttachments(res.data);
 };
 
-/* UPLOAD FILE */
+// Upload an attachment to a task
 export const uploadFile = async ({ file, taskId, setFile, setAttachments }) => {
   if (!file) return;
 
@@ -19,9 +19,8 @@ export const uploadFile = async ({ file, taskId, setFile, setAttachments }) => {
   await loadAttachments({ taskId, setAttachments });
 };
 
-/* DELETE FILE */
+// Delete an attachment
 export const deleteFile = async ({ id, taskId, setAttachments }) => {
   await api.delete(`/attachments/${id}`);
-
   await loadAttachments({ taskId, setAttachments });
 };

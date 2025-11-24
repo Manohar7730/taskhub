@@ -13,15 +13,18 @@ export const deleteAttachment = async (req, res) => {
     const { id } = req.params;
     const attachment = await Attachment.findById(id);
 
-    if (!attachment)
+    if (!attachment) {
       return res.status(404).json({ message: "Not found" });
+    }
 
-    if (attachment.owner.toString() !== req.user.userId)
+    if (attachment.owner.toString() !== req.user.userId) {
       return res.status(403).json({ message: "Unauthorized" });
+    }
 
-    // S3 delete if URL
+    // Delete from S3 if the file is stored remotely
     if (attachment.filePath.startsWith("http")) {
-      const Key = attachment.filePath.split(".amazonaws.com/")[1];
+      const Key =
+        attachment.fileKey || attachment.filePath.split(".amazonaws.com/")[1];
 
       await s3
         .deleteObject({
@@ -30,15 +33,15 @@ export const deleteAttachment = async (req, res) => {
         })
         .promise();
     } else {
-      // Local delete
+      // Delete from local storage
       fs.unlink(`uploads/${attachment.filePath}`, () => {});
     }
 
     await attachment.deleteOne();
 
-    res.json({ message: "Attachment deleted" });
+    return res.json({ message: "Attachment deleted" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };

@@ -1,102 +1,107 @@
-# TaskHub – Requirements (Version 1)
+# TaskHub — Requirements
 
-## 1. Overview
-TaskHub is a full-stack MERN project management system with:
-- User authentication
-- OTP verification
-- Projects
-- Tasks
-- File attachments
-- Full dashboard
-- Role: single-user per account (V1)
+## Purpose
+
+TaskHub is a simple, secure project & task manager with OTP-based authentication and attachment support.  
+V1 targets individuals or small teams while emphasizing clean UX and proper security practices.
 
 ---
 
-## 2. Authentication Requirements
-### Registration
-- User registers with name, email, password
-- OTP emailed for email verification
-- Account becomes active only after OTP verification
+## Functional Requirements (V1)
 
-### Login
-- Verified email required
-- JWT authentication
-- Protected routes
+### **1. Authentication & Authorization**
 
-### Forgot Password
-- Request OTP for reset
-- Verify OTP
-- Update password
+- Register with name, email, password.
+- Email verification via 6-digit OTP.
+- Login (email + password), only if email verified.
+- JWT-based authentication.
+- Forgot password workflow using OTP.
+- Password reset via OTP verification.
+- Change password for logged-in users (OTP required).
+- `GET /api/auth/me` returns authenticated user profile.
 
-### Change Password (Logged in)
-- Request OTP
-- Verify OTP
-- Update password
+### **2. Projects**
 
----
+- Users can create, update, delete, list projects.
+- Project belongs to one user only.
 
-## 3. Project Management
-### Project Features
-- Create project with:
-  - title
-  - description
-  - due date
-- Update project
-- Delete project
-- View project details
-- Dashboard shows project count
+### **3. Tasks**
 
----
+- Create tasks under projects.
+- Task fields:
+  - `title`
+  - `description`
+  - `status` (todo / in-progress / done)
+  - `priority`
+  - `dueDate`
+  - `progress`
+- Update/delete tasks.
+- Fetch single task or task list per project.
 
-## 4. Task Management
-### Task Features
-- Create task inside a project
-- Edit task:
-  - status (todo, in-progress, done)
-  - priority (low, medium, high)
-  - progress (0-100)
-  - description
-  - due date
-- Delete task
-- View tasks inside project
-- Task details page
+### **4. Attachments**
 
----
+- Upload **images (png, jpg, jpeg)** and **PDF** only.
+- File size limit: ~5 MB.
+- List task attachments.
+- Delete attachments.
+- Hybrid storage system:
+  - Local (`uploads/tasks/`) for development.
+  - AWS S3 for production.
+- Attachments linked to task + owner.
 
-## 5. Attachments
-- Upload image/PDF
-- Max size 5MB
-- Preview image/PDF
-- Download file
-- Delete file
-- S3 planned in V2 (local upload in V1)
+### **5. UI Requirements**
+
+- Responsive interface.
+- Auth pages: register, login, verify OTP, forgot/reset password.
+- Dashboard: show counts (projects, tasks).
+- Projects list page.
+- Project details page with task list.
+- Task details page with status, priority, progress, attachments.
 
 ---
 
-## 6. UI Requirements
-- React + Vite + Tailwind
-- ProtectedRoute / PublicRoute
-- AuthContext with session storage
-- Responsive layout
-- Modern minimal UI styling
+## Non-Functional Requirements (NFRs)
+
+### **Security**
+
+- Passwords hashed (bcrypt).
+- OTP expires after 10 minutes.
+- OTP has `used` flag to prevent reuse.
+- JWT secret stored in environment variables only.
+- CORS restricted to known frontend origin(s).
+- Rate limiting for auth endpoints.
+- No stack traces in production responses.
+- Input validation for all user fields.
+
+### **Performance**
+
+- Lightweight API with minimal latency.
+- Pagination not required in V1 but recommended for V2.
+
+### **Reliability**
+
+- MongoDB Atlas for managed DB.
+- S3 for reliable file hosting in production.
 
 ---
 
-## 7. Deployment Requirements
-### Backend
-- Expose /api
-- Serve static files from /uploads
-- Use environment variables
+## Deployment & Ops
 
-### Frontend
-- Build to /dist
-- Configure VITE_API_URL
+- Backend → Render / Railway / VPS.
+- Frontend → Netlify / Vercel.
+- DB → MongoDB Atlas.
+- Storage → AWS S3.
+- Use Render / Vercel “Environment Variables” for secrets.
 
 ---
 
-## 8. V2 Roadmap (future)
-- S3 attachment storage
-- Real-time notifications
-- Multi-user teams
-- Sharing and permissions
-- Comments + activity logs
+## Security Checklist Before Release
+
+- Rotate secrets if `.env` was ever committed.
+- Ensure helmet + express-rate-limit applied.
+- Validate upload file types.
+- Limit JSON request size (1 MB recommended).
+- Use HTTPS in production.
+- Remove any debug/test endpoints.
+
+---

@@ -3,9 +3,7 @@ import path from "path";
 import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
 
-// ---------------------
-// FILE FILTER
-// ---------------------
+// File type filter for uploads
 const fileFilter = (req, file, cb) => {
   const allowed = [".png", ".jpg", ".jpeg", ".pdf"];
   const ext = path.extname(file.originalname).toLowerCase();
@@ -14,22 +12,18 @@ const fileFilter = (req, file, cb) => {
     : cb(new Error("Only images and PDFs allowed"));
 };
 
-// ---------------------
-// LOCAL STORAGE (DEV)
-// ---------------------
+// Local storage configuration (used in development)
 const localStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.resolve("uploads/tasks"));
   },
   filename: (req, file, cb) => {
     const cleanName = file.originalname.replace(/[^a-zA-Z0-9.\-_]/g, "_");
-    cb(null, Date.now() + "-" + cleanName);
+    cb(null, `${Date.now()}-${cleanName}`);
   },
 });
 
-// ---------------------
-// ONLY CREATE S3 STORAGE IF PRODUCTION
-// ---------------------
+// S3 storage (only created when running in production)
 let s3Storage = null;
 
 if (process.env.NODE_ENV === "production") {
@@ -52,16 +46,15 @@ if (process.env.NODE_ENV === "production") {
     },
   });
 }
-// ---------------------
-// CHOOSE STORAGE BASED ON ENV
-// ---------------------
+
+// Choose storage method based on environment
 const storage =
   process.env.NODE_ENV === "production" ? s3Storage : localStorage;
 
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
 });
 
 export default upload;

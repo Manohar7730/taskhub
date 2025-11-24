@@ -35,7 +35,7 @@ export default function Login() {
         </p>
 
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
-          {/* Email */}
+          {/* Email field */}
           <input
             type="email"
             name="email"
@@ -45,7 +45,7 @@ export default function Login() {
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
-          {/* Password */}
+          {/* Password field */}
           <div className="w-full">
             <input
               type={showPassword ? "text" : "password"}
@@ -67,7 +67,7 @@ export default function Login() {
             </label>
           </div>
 
-          {/* Submit */}
+          {/* Submit button */}
           <button
             type="submit"
             className="w-full rounded-md bg-cyan-500 py-2 font-medium text-white transition hover:bg-cyan-600 active:scale-95"
@@ -76,7 +76,7 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Links */}
+        {/* Footer links */}
         <div className="mt-4 flex w-full items-center justify-between">
           <Link
             to="/forgot-password"

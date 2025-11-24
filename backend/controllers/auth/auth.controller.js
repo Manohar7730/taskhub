@@ -5,4 +5,4 @@ import { verifyOtp } from "./otp.controller.js";
 import { requestPasswordOtp } from "./password.controller.js";
 import { updatePassword } from "./password.controller.js";
 
-export {register,login,me,verifyOtp,requestPasswordOtp,updatePassword}
+export { register, login, me, verifyOtp, requestPasswordOtp, updatePassword };

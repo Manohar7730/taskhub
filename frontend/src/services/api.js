@@ -21,16 +21,17 @@ api.interceptors.response.use(
   (res) => res,
   (error) => {
     const status = error?.response?.status;
+
     if (status === 401) {
-      // Remove local token and broadcast logout to other tabs/windows
+      // Remove token and trigger logout event
       sessionStorage.removeItem("auth-token");
-      // custom event to let AuthProvider react
       try {
         window.dispatchEvent(new CustomEvent("app:logout"));
       } catch (e) {
         console.log(e.message);
       }
     }
+
     return Promise.reject(error);
   },
 );

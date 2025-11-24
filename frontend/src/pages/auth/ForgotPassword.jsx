@@ -17,6 +17,7 @@ export default function ForgotPassword() {
 
       await forgotPasswordRequestOTP({ email });
 
+      // Store email and purpose for next step
       sessionStorage.setItem("otp-email", email);
       sessionStorage.setItem("otp-purpose", "PASSWORD_RESET");
 

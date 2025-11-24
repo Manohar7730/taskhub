@@ -6,12 +6,16 @@ import { verifyOtp } from "../../services/auth.api";
 export default function VerifyOtp() {
   const navigate = useNavigate();
 
+  // Email stored during registration
   const registerEmail = sessionStorage.getItem("register-email");
   const email = registerEmail;
   const isRegisterFlow = !!registerEmail;
+
   useEffect(() => {
+    // Redirect if opened without a valid registration email
     if (!registerEmail) navigate("/login");
   });
+
   const handleOtpComplete = async (otp) => {
     if (isRegisterFlow) {
       await verifyOtp({

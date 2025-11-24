@@ -31,7 +31,7 @@ export default function UpdateProject() {
 
   if (!project) return <p>Loading...</p>;
 
-  // SUBMIT UPDATE
+  // Handle update submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -51,7 +51,7 @@ export default function UpdateProject() {
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* TITLE */}
+          {/* Project title */}
           <div>
             <label className="mb-1 block font-semibold text-gray-700">
               Title <span className="text-red-500">*</span>
@@ -65,7 +65,7 @@ export default function UpdateProject() {
             />
           </div>
 
-          {/* DESCRIPTION */}
+          {/* Project description */}
           <div>
             <label className="mb-1 block font-semibold text-gray-700">
               Description
@@ -79,7 +79,7 @@ export default function UpdateProject() {
             />
           </div>
 
-          {/* DUE DATE */}
+          {/* Due date */}
           <div>
             <label className="mb-1 block font-semibold text-gray-700">
               Due Date
@@ -92,7 +92,7 @@ export default function UpdateProject() {
             />
           </div>
 
-          {/* UPDATE BUTTON */}
+          {/* Save changes button */}
           <button
             type="submit"
             className="w-full rounded-lg bg-cyan-600 py-2.5 font-medium text-white transition hover:bg-cyan-700 active:scale-95"
@@ -101,7 +101,7 @@ export default function UpdateProject() {
           </button>
         </form>
 
-        {/* CANCEL */}
+        {/* Cancel button */}
         <button
           onClick={() => navigate(`/projects/${projectId}`)}
           className="mt-4 w-full font-medium text-gray-600 transition hover:text-gray-800 active:scale-95"

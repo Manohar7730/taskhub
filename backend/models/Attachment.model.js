@@ -15,6 +15,7 @@ const attachmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    fileKey: { type: String },
     mimeType: {
       type: String,
       required: true,
@@ -27,7 +28,7 @@ const attachmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    }
+    },
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 );

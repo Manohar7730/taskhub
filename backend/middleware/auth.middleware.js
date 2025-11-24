@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 
+// Middleware to verify JWT and attach the decoded user to the request
 export const auth = (req, res, next) => {
   try {
     if (!process.env.JWT_SECRET) {
@@ -8,6 +9,7 @@ export const auth = (req, res, next) => {
 
     const authHeader = req.headers.authorization;
 
+    // Validate Bearer token format
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "Unauthorized" });
     }

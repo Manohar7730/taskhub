@@ -26,6 +26,7 @@ export default function ProjectDetails() {
 
   if (!project) return <p className="p-10 text-center">Loading...</p>;
 
+  // Remove a task from this project
   const handleDeleteTask = async (taskId) => {
     if (!confirm("Delete this task?")) return;
 
@@ -37,6 +38,7 @@ export default function ProjectDetails() {
     }
   };
 
+  // Delete the entire project
   const handleDeleteProject = async () => {
     if (!confirm("Delete this entire project?")) return;
 
@@ -50,6 +52,7 @@ export default function ProjectDetails() {
 
   return (
     <div className="mx-auto max-w-4xl p-6">
+      {/* Project overview */}
       <div className="mb-8 rounded-xl bg-white p-6 shadow">
         <h1 className="mb-2 text-3xl font-bold">{project.title}</h1>
 
@@ -65,6 +68,7 @@ export default function ProjectDetails() {
           </span>
         </div>
 
+        {/* Project actions */}
         <div className="mt-6 flex gap-3">
           <button
             onClick={() => navigate(`/projects/${projectId}/edit`)}
@@ -82,6 +86,7 @@ export default function ProjectDetails() {
         </div>
       </div>
 
+      {/* Task list */}
       <div className="rounded-xl bg-white p-6 shadow">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Tasks</h2>
@@ -120,6 +125,7 @@ export default function ProjectDetails() {
                     </div>
                   </div>
 
+                  {/* Task actions */}
                   <div className="flex gap-3">
                     <button
                       onClick={() => navigate(`/task/${task._id}`)}

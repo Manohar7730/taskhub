@@ -16,6 +16,7 @@ export default function UpdatePassword() {
   const isChangePasswordFlow = !!user;
 
   useEffect(() => {
+    // Redirect if this page was accessed incorrectly
     if (!email || purpose !== "PASSWORD_RESET") {
       navigate("/login");
     }
@@ -53,6 +54,7 @@ export default function UpdatePassword() {
 
       alert("Password updated successfully!");
 
+      // Clear OTP session data
       sessionStorage.removeItem("otp-email");
       sessionStorage.removeItem("otp-purpose");
       sessionStorage.removeItem("otp-code");
@@ -79,12 +81,12 @@ export default function UpdatePassword() {
           OTP sent to <span className="font-medium text-gray-700">{email}</span>
         </p>
 
-        {/* OTP INPUT */}
+        {/* OTP input field */}
         <div className="mb-6">
           <OtpInput length={6} onComplete={handleOtpComplete} />
         </div>
 
-        {/* FORM */}
+        {/* Password update form */}
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3">
           <input
             type={showPassword ? "text" : "password"}

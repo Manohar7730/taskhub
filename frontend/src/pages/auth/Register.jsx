@@ -41,7 +41,7 @@ export default function Register() {
         <p className="mb-6 text-center text-gray-600">Create a new account</p>
 
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
-          {/* Name */}
+          {/* Name field */}
           <input
             type="text"
             name="name"
@@ -51,7 +51,7 @@ export default function Register() {
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
-          {/* Email */}
+          {/* Email field */}
           <input
             type="email"
             name="email"
@@ -61,7 +61,7 @@ export default function Register() {
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
-          {/* Password */}
+          {/* Password field */}
           <input
             type={showPassword ? "text" : "password"}
             name="password"
@@ -71,7 +71,7 @@ export default function Register() {
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
-          {/* Confirm Password */}
+          {/* Confirm password field */}
           <input
             type={showPassword ? "text" : "password"}
             name="confirmPassword"
@@ -81,7 +81,7 @@ export default function Register() {
             className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 focus:outline-none"
           />
 
-          {/* Show Password Toggle */}
+          {/* Password visibility toggle */}
           <label className="flex items-center text-sm text-gray-600">
             <input
               type="checkbox"
@@ -92,7 +92,7 @@ export default function Register() {
             Show Password
           </label>
 
-          {/* Submit */}
+          {/* Submit button */}
           <button
             type="submit"
             className="w-full rounded-md bg-cyan-500 py-2 font-medium text-white transition hover:bg-cyan-600 active:scale-95"

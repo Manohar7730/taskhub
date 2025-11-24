@@ -3,9 +3,7 @@ import UserModel from "../../models/User.model.js";
 import { sendEmail } from "../../services/email.service.js";
 import { generateOtp } from "./util.js";
 
-/*******************************
- * REQUEST OTP FOR ANY PURPOSE
- *******************************/
+// Send OTP for password reset request
 export const requestPasswordOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -14,7 +12,7 @@ export const requestPasswordOtp = async (req, res) => {
 
     const user = await UserModel.findOne({ email });
 
-    // Always return success, even if user doesn't exist
+    // Always return the same message to avoid exposing valid emails
     const msg = { message: "If the email exists, OTP was sent." };
 
     if (!user) return res.status(200).json(msg);
@@ -26,10 +24,17 @@ export const requestPasswordOtp = async (req, res) => {
       code,
       purpose: "PASSWORD_RESET",
       used: false,
-      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // expires in 10 minutes
     });
 
-    await sendEmail(email, "OTP for Password Reset", `Your OTP is ${code}`);
+    // Email the OTP to the user
+    await sendEmail(
+      email,
+      "Password Reset OTP",
+      `Your TaskHub password reset OTP is: ${code}`
+    );
+
+    console.log(`[PASSWORD OTP] Sent to ${email}`);
 
     return res.status(200).json(msg);
   } catch (err) {
@@ -38,20 +43,19 @@ export const requestPasswordOtp = async (req, res) => {
   }
 };
 
-/********************************
- * UPDATE PASSWORD AFTER OTP VERIFIED
- *******************************/
+// Update password after validating OTP
 export const updatePassword = async (req, res) => {
   try {
     const { email, code, newPassword } = req.body;
 
-    if (!email || !code || !newPassword)
+    if (!email || !code || !newPassword) {
       return res
         .status(400)
         .json({ message: "email, code, newPassword required" });
+    }
 
-    // Find OTP
-    const token = await OtpTokenModel.findOne({
+    // Confirm valid OTP for password reset
+    const otpRecord = await OtpTokenModel.findOne({
       email,
       code,
       purpose: "PASSWORD_RESET",
@@ -59,19 +63,23 @@ export const updatePassword = async (req, res) => {
       expiresAt: { $gt: new Date() },
     });
 
-    if (!token)
+    if (!otpRecord) {
       return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
 
-    // Find user
+    // Ensure user exists
     const user = await UserModel.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid request" });
 
+    // Apply the new password
     user.password = newPassword;
     await user.save();
 
-    // Mark token used
-    token.used = true;
-    await token.save();
+    // Mark OTP as used so it cannot be reused
+    otpRecord.used = true;
+    await otpRecord.save();
+
+    console.log(`[PASSWORD UPDATED] for user: ${email}`);
 
     return res.status(200).json({ message: "Password updated successfully" });
   } catch (err) {
