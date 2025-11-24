@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 
-app.get("/s3-test", async (req, res) => {
+app.get("/api/s3-test", async (req, res) => {
   try {
     const s3 = new AWS.S3({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -32,5 +32,5 @@ app.get("/s3-test", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
