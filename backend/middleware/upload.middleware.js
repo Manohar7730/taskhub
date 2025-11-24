@@ -42,6 +42,7 @@ if (process.env.NODE_ENV === "production") {
   s3Storage = multerS3({
     s3,
     bucket: process.env.AWS_BUCKET_NAME,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: (req, file, cb) => {
       cb(null, { fieldName: file.fieldname });
     },
@@ -51,7 +52,6 @@ if (process.env.NODE_ENV === "production") {
     },
   });
 }
-
 // ---------------------
 // CHOOSE STORAGE BASED ON ENV
 // ---------------------
