@@ -26,8 +26,14 @@ router.get("/attachments/:id/download", auth, async (req, res) => {
     const attachment = await Attachment.findById(req.params.id);
     if (!attachment) return res.status(404).send("File not found");
 
+    // If file is stored on S3 (starts with http)
+    if (attachment.filePath.startsWith("http")) {
+      return res.redirect(attachment.filePath);  // redirect to S3 URL
+    }
+
+    // Local dev mode download
     const filePath = path.resolve("uploads", attachment.filePath);
-    
+
     console.log("DB filePath:", attachment.filePath);
     console.log("Full path:", filePath);
     console.log("Exists:", fs.existsSync(filePath));

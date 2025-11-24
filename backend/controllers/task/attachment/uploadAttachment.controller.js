@@ -9,7 +9,7 @@ export const uploadAttachment = async (req, res) => {
     const attachment = await Attachment.create({
       task: taskId,
       fileName: req.file.originalname,
-filePath: `tasks/${req.file.filename}`,
+      filePath: req.file.location || `tasks/${req.file.filename}`,
       mimeType: req.file.mimetype,
       size: req.file.size,
       owner: req.user.userId,

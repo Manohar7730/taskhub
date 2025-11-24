@@ -131,7 +131,11 @@ const TaskDetails = () => {
               <div key={a._id} className="rounded border p-2">
                 {a.mimeType.includes("image") ? (
                   <img
-                    src={`${import.meta.env.VITE_API_URL}/uploads/${a.filePath}`}
+src={
+  a.filePath.startsWith("http")
+    ? a.filePath
+    : `${import.meta.env.VITE_API_URL}/uploads/${a.filePath}`
+}
                     alt={a.fileName}
                     className="h-32 w-full object-cover"
                   />
@@ -144,7 +148,11 @@ const TaskDetails = () => {
 
                 <div className="mt-2 flex flex-wrap justify-evenly text-sm">
                   <a
-                    href={`${import.meta.env.VITE_API_URL}/uploads/${a.filePath}`}
+href={
+  a.filePath.startsWith("http")
+    ? a.filePath
+    : `${import.meta.env.VITE_API_URL}/uploads/${a.filePath}`
+}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"

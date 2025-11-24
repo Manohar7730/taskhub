@@ -1,17 +1,38 @@
+import AWS from "aws-sdk";
 import fs from "fs";
 import Attachment from "../../../models/Attachment.model.js";
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
 
 export const deleteAttachment = async (req, res) => {
   try {
     const { id } = req.params;
-
     const attachment = await Attachment.findById(id);
-    if (!attachment) return res.status(404).json({ message: "Not found" });
 
-    if (attachment.owner.toString() !== req.user.userId.toString())
+    if (!attachment)
+      return res.status(404).json({ message: "Not found" });
+
+    if (attachment.owner.toString() !== req.user.userId)
       return res.status(403).json({ message: "Unauthorized" });
 
-    fs.unlink(`uploads/${attachment.filePath}`, () => {});
+    // S3 delete if URL
+    if (attachment.filePath.startsWith("http")) {
+      const Key = attachment.filePath.split(".amazonaws.com/")[1];
+
+      await s3
+        .deleteObject({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key,
+        })
+        .promise();
+    } else {
+      // Local delete
+      fs.unlink(`uploads/${attachment.filePath}`, () => {});
+    }
 
     await attachment.deleteOne();
 
