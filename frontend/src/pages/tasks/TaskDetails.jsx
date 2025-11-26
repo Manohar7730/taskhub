@@ -3,10 +3,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getTaskByID } from "../../services/task.api";
 import {
   deleteFile,
+  getDownloadUrlAndOpen,
   loadAttachments,
   uploadFile,
 } from "../../services/attachment.api";
-import api from "../../services/api";
 
 const TaskDetails = () => {
   const { taskId } = useParams();
@@ -57,24 +57,10 @@ const TaskDetails = () => {
       setAttachments,
     });
   };
-
-  // Download attachment as file
   const handleDownload = async (id, fileName) => {
     try {
-      const response = await api.get(`/attachments/${id}/download`, {
-        responseType: "blob", // Required to download binary data
-      });
-
-      const blob = new Blob([response.data]);
-      const url = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-
-      link.click();
-      link.remove();
+      // Pass the fileName to the helper
+      await getDownloadUrlAndOpen(id, fileName);
     } catch (err) {
       console.error("Download failed:", err);
     }

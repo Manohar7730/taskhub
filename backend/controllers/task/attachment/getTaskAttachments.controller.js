@@ -3,7 +3,6 @@ import Attachment from "../../../models/Attachment.model.js";
 export const getTaskAttachments = async (req, res) => {
   try {
     const { taskId } = req.params;
-
     const attachments = await Attachment.find({ task: taskId }).sort({
       createdAt: -1,
     });
@@ -14,3 +13,5 @@ export const getTaskAttachments = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export default getTaskAttachments;

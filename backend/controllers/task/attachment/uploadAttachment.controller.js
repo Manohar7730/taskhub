@@ -7,12 +7,25 @@ export const uploadAttachment = async (req, res) => {
     }
 
     const { taskId } = req.params;
+    let filePath, fileKey;
+    if (process.env.NODE_ENV === "production") {
+      if (!req.file.location) {
+        throw new Error(
+          "Critical: S3 location missing in production environment."
+        );
+      }
+      filePath = req.file.location;
+      fileKey = req.file.key;
+    } else {
+      filePath = `tasks/${req.file.filename}`;
+      fileKey = null;
+    }
 
     const attachment = await Attachment.create({
       task: taskId,
       fileName: req.file.originalname,
-      filePath: req.file.location || `tasks/${req.file.filename}`,
-      fileKey: req.file.key || null,
+      filePath,
+      fileKey,
       mimeType: req.file.mimetype,
       size: req.file.size,
       owner: req.user.userId,
@@ -20,29 +33,12 @@ export const uploadAttachment = async (req, res) => {
 
     return res.status(201).json({ message: "Uploaded", attachment });
   } catch (err) {
-    console.error("UPLOAD ERROR:");
-    console.error("Message:", err.message);
-    console.error("Stack:", err.stack);
-
-    // Extra info about the uploaded file (if any)
-    if (req.file) {
-      console.error("File details:", {
-        originalname: req.file.originalname,
-        mimetype: req.file.mimetype,
-        size: req.file.size,
-        location: req.file.location,
-        key: req.file.key,
-      });
-    } else {
-      console.error("No file data was provided by Multer");
-    }
-
-    // Log current environment
-    console.error("NODE_ENV:", process.env.NODE_ENV);
-
+    console.error("UPLOAD CONTROLLER ERROR:", err.message);
     return res.status(500).json({
       message: "Upload failed",
       error: err.message,
     });
   }
 };
+
+export default uploadAttachment;
